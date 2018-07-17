@@ -16,7 +16,7 @@ import Routes from './src/Routes';
 
 // The http link is the most common Apollo Link.
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'https://192.168.1.9:4000/graphql' }),
+  link: new HttpLink({ uri: 'http://localhost:4000/graphql' }),
   cache: new InMemoryCache()
 });
 
