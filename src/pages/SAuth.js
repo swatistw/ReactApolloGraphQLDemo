@@ -49,10 +49,10 @@ export default class App extends Component {
   };
 
   // Handle Login with Facebook button tap
-  loginWithFacebook = () => this.openURL('https://192.168.1.9:4000/auth/facebook');
+  loginWithFacebook = () => this.openURL('https://localhost:4000/auth/facebook');
 
   // Handle Login with Google button tap
-  loginWithGoogle = () => this.openURL('https://192.168.1.9.xip.io:4000/auth/google');
+  loginWithGoogle = () => this.openURL('https://localhost.xip.io:4000/auth/google');
 
   openURL = (url) => {
      // Use SafariView on iOS
