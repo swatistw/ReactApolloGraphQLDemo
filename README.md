@@ -36,19 +36,126 @@ Login in mlab and create new
 *	Create User model
 
 `const userSchema = new Schema({
-  // local: {
-      email: String,
-      password: String,
-  // },
-  // facebook:{
-      id: String,
-      token: String,
-      name: String
-  // }
-});
-module.exports = mongoose.model('User',userSchema);
-`
 
+  // local: {
+  
+      email: String,
+	  
+      password: String,
+	  
+  // },
+  
+  // facebook:{
+  
+      id: String,
+	  
+      token: String,
+	  
+      name: String
+	  
+  // }
+  
+});
+
+module.exports = mongoose.model('User',userSchema);
+
+`
+*	Create Schema user 
+`
+type User {
+
+  _id: String!
+  
+  email: String!
+  
+  password: String!
+  
+}
+
+type Mutation {
+
+  createUser(email: String!, password: String!): User!
+  
+  login(email: String!, password: String!): String!
+  
+}
+
+
+`
+*	Create resolver 
+`
+Mutation: {
+
+  createUser: async (parent, args, { User }) => {
+  
+  const userargs = args;
+  
+  // check existing user to prevent duplicate email entry
+  
+    const existingUser = await User.findOne({ email:userargs.email });
+	
+     if (existingUser) {
+	 
+       throw new Error('Email already used');
+	   
+     }
+	 
+  // use bacrypt hash function for password encryption
+  
+    userargs.password = await bcrypt.hash(userargs.password, 12);
+	
+    return User.create(userargs);
+	
+  },
+  
+
+  login: async(parent, { email, password }, { User, SECRET }) => {
+  
+    const userch = await User.findOne({ email });
+	
+      if (!userch){
+	  
+        throw new Error('Not user with that email');
+		
+      }
+	  
+  // use bacrypt compare function for password decryption
+  
+      const valid = await bcrypt.compare(password, userch.password);
+	  
+      if(!valid){
+	  
+        throw new Error('Incorrect password');
+		
+      }
+	  
+      const token = jwt.sign(
+	  
+      {
+	  
+        userch: _.pick(userch, ['id', 'username']),
+		
+      },
+	  
+      SECRET,
+	  
+      {
+	  
+          expiresIn: '1y',
+		  
+      }
+	  
+    );
+	
+      return token;
+	  
+  },
+  
+
+},
+
+
+`
 
 
 ## Demo
