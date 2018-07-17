@@ -72,7 +72,6 @@ passport.serializeUser((user, done) => done(null, user));
 
 // Deserialize user from the sessions
 passport.deserializeUser((user, done) => done(null, user));
-
 // Initialize http server
 const app = express();
 
