@@ -264,7 +264,7 @@ onAuth(){
     }
 	}
 ```
-**	Mutation-
+Mutation-
 ```
 const signupMutation = gql`
    mutation ($email: String!, $password: String!) {
@@ -280,11 +280,76 @@ graphql(signupMutation, { props: ({ mutate }) => ({
   })
 }),
 ```
+Result –
+
+<img src="Images/signupcred.png" alt="signupcred" width="640" />
+<img src="Images/signupDb.png" alt="signupDb" width="640" />
+*	Login
+```
+<TouchableOpacity style={styles.button}>
+    <Text style={styles.buttonText} onPress={this.onAuth.bind(this)}>Login</Text>
+</TouchableOpacity>
+
+onAuth(){
+      this.props.login(this.state.email,this.state.password).then(() =>{
+           Actions.home();
+        })
+        .catch(() => {
+            alert("Unsuccessful Login..try again");
+        })
+
+    }
+}
+```
+Mutation-
+```
+const loginMutation = gql`
+   mutation ($email: String!, $password: String!) {
+     login(email: $email, password: $password)
+  }`
 
 
+graphql(loginMutation, { props: ({ mutate }) => ({
+   login: (email, password) => mutate({ variables: { email, password } }),
+   })
+ })
+```
+Result –
+<img src="Images/logincred.png" alt="logincred" width="640" />
+If credentials not match it will throw error like below-
+<img src="Images/loginUnsuccessful.png" alt="loginUnsuccessful" width="640" />
+For successful login –
+<img src="Images/loginDone.png" alt="loginDone" width="640" />
 
+*	Facebook login 
+```
+<Icon.Button
+  name="facebook"
+  backgroundColor="#3b5998"
+  onPress={this.loginWithFacebook}
+>
 
+loginWithFacebook = () => this.openURL('https://localhost:4000/auth/facebook');
 
-## Demo
+```
+Result –
+<img src="Images/fb_start.png" alt="fb_start" width="640" />
+After successful facebook login-
+<img src="Images/fb_done.png" alt="fb_done" width="640" />
+*	Google+ login
+```
+<Icon.Button
+  name="google"
+  backgroundColor="#3b5998"
+  onPress={this.loginWithGoogle}
+>
 
-<img src="https://github.com/rationalappdev/oauth-login/blob/master/demo.gif" alt="Demo" width="640" />
+loginWithGoogle = () => this.openURL('https://localhost.xip.io:4000/auth/google');
+```
+It will directly call api from server/backend
+
+Result –
+<img src="Images/gmail_start.png" alt="gmail_start" width="640" />
+After successful google+ login
+<img src="Images/gmail_done.png" alt="gmail_done" width="640" />
+
