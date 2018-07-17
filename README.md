@@ -19,14 +19,36 @@
 Run npm init to create the package.json file, so we can install backend dependencies separately from React Native app:
 <img src="Images/npminit.png" alt="npminit" width="640" />
 It’s going to ask you a few questions. You can just press return to give the default answers for each question.
-*   Install Dependencies
+
+*	Install Dependencies
 First, install dev dependencies that we’ll going to need during development:
 <img src="Images/installDep.png" alt="installDep" width="640" />
 And next, install the dependencies that we’ll use to do some work:
 <img src="Images/installDep1.png" alt="installDep1" width="640" />
-*   Create the Database in mLab
+
+*	Create the Database in mLab
 Login in mlab and create new 
 <img src="Images/createMlab.png" alt="createMlab" width="640" />
+<img src="Images/sandbox.png" alt="sandbox" width="640" />
+<img src="Images/db_name.png" alt="db_name" width="640" />
+<img src="Images/dbCreated.png" alt="dbCreated" width="640" />
+
+*	Create User model
+
+`const userSchema = new Schema({
+  // local: {
+      email: String,
+      password: String,
+  // },
+  // facebook:{
+      id: String,
+      token: String,
+      name: String
+  // }
+});
+module.exports = mongoose.model('User',userSchema);
+`
+
 
 
 ## Demo
