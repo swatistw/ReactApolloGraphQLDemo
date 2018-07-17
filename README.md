@@ -37,21 +37,12 @@ Login in mlab and create new
 
 ```
 const userSchema = new Schema({
-
-  
       email: String,
-	  
       password: String,
-	  
  
-  
       id: String,
-	  
       token: String,
-	  
       name: String
-	  
-    
 });
 
 module.exports = mongoose.model('User',userSchema);
@@ -60,21 +51,14 @@ module.exports = mongoose.model('User',userSchema);
 *	Create Schema user 
 ```
 type User {
-
   _id: String!
-  
   email: String!
-  
   password: String!
-  
 }
 
 type Mutation {
-
   createUser(email: String!, password: String!): User!
-  
   login(email: String!, password: String!): String!
-  
 }
 
 
@@ -82,74 +66,223 @@ type Mutation {
 *	Create resolver 
 ```
 Mutation: {
-
   createUser: async (parent, args, { User }) => {
-  
   const userargs = args;
-  
-  
+ 
     const existingUser = await User.findOne({ email:userargs.email });
-	
      if (existingUser) {
-	 
        throw new Error('Email already used');
-	   
      }
-	 
-  
     userargs.password = await bcrypt.hash(userargs.password, 12);
-	
     return User.create(userargs);
-	
   },
   
-
   login: async(parent, { email, password }, { User, SECRET }) => {
-  
     const userch = await User.findOne({ email });
-	
       if (!userch){
-	  
         throw new Error('Not user with that email');
-		
       }
-	  
-  
       const valid = await bcrypt.compare(password, userch.password);
-	  
       if(!valid){
-	  
         throw new Error('Incorrect password');
-		
       }
-	  
       const token = jwt.sign(
-	  
       {
-	  
         userch: _.pick(userch, ['id', 'username']),
-		
       },
-	  
       SECRET,
-	  
       {
-	  
           expiresIn: '1y',
-		  
       }
-	  
     );
-	
       return token;
-	  
   },
-  
 
 },
 
-
 ```
+*	Create the Server
+Let’s create a script that will run an HTTP server and handle incoming requests
+•	Create a new file called server.js with the following content
+```
+const express = require('express');
+const passport = require('passport');
+const FacebookStrategy = require('passport-facebook');
+const GoogleStrategy = require('passport-google-oauth20');
+
+const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const { makeExecutableSchema } = require('graphql-tools');
+const graphqlHTTP = require('express-graphql');
+const mongoose =  require('mongoose');
+var https = require('https');
+var fs = require('fs');
+const typeDefs  = require('./schema/schema');
+const resolvers = require('./schema/resolver');
+const User = require('./model/users');
+
+// mlab database connection
+mongoose.connect(‘MondoDB_URI’); 
+mongoose.connection.once('open', () =>{
+  console.log("connected to database");
+});
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers
+});
+
+const SECRET = 'secret string put here';
+
+// Transform Facebook profile because Facebook and Google profile objects look different
+// and we want to transform them into user objects that have the same set of attributes
+const transformFacebookProfile = (profile) => ({
+  name: profile.name,
+  avatar: profile.picture.data.url,
+});
+
+// Transform Google profile into user object
+const transformGoogleProfile = (profile) => ({
+  name: profile.displayName,
+  avatar: profile.image.url,
+});
+
+// Register Facebook Passport strategy
+passport.use(new FacebookStrategy(
+    {
+        clientID: 'put facebook App Id here',
+        clientSecret: 'put app secret here',
+        callbackURL: 'https://localhost:4000/auth/facebook/callback',
+        profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
+    },
+  // Gets called when user authorizes access to their profile
+  function (accessToken, refreshToken, profile, done){
+    // Return done callback and pass transformed user object
+     done(null, transformFacebookProfile(profile._json))
+     }
+));
+
+// Register Google Passport strategy
+passport.use(new GoogleStrategy(
+  {
+    clientID: '',
+    clientSecret: '',
+    callbackURL: 'https://localhost.xip.io:4000/auth/google/callback',
+  },
+  function (accessToken, refreshToken, profile, done){
+    done(null, transformGoogleProfile(profile._json))
+    }
+));
+
+// Serialize user into the sessions
+passport.serializeUser((user, done) => done(null, user));
+
+// Deserialize user from the sessions
+passport.deserializeUser((user, done) => done(null, user));
+
+// Initialize http server
+const app = express();
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Set up Facebook auth routes
+app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
+  // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
+  (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
+
+// Set up Google auth routes
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/auth/google' }),
+  (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
+
+
+app.use('/graphql', bodyParser.json(), graphqlExpress({ schema, context: { User, SECRET } }));
+app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+
+//var privateKey  = fs.readFileSync('C:/demo/ca.key', 'utf8');
+//var certificate = fs.readFileSync('C:/demo/ca.crt', 'utf8');
+//var credentials = {key: privateKey, cert: certificate};
+//var httpsServer = https.createServer(credentials,app);
+//httpsServer.listen(4000);
+
+const server = app.listen(4000, () => {
+  const { address, port } = server.address();
+  console.log(`Listening at http://${address}:${port}`);
+});
+```
+*	Launch the Server
+
+Let’s launch the server and see how it works.
+
+•	Open Terminal App and execute:
+```
+nodemon
+```
+<img src="Images/nodemon.png" alt="nodemon" width="640" />
+That means the server works. That’s great. Keep it running and let’s continue to the mobile app.
+
+## Mobile App
+### Now that we have our backend ready let’s build the mobile app with react-apollo.
+#### react-apollo -React-Apollo includes a component for providing a client instance to a React component tree, and a higher-order component for retrieving that client instance.
+*	Generate project using react-native cli:
+```
+react-native init OAuthLogin npm install 
+```
+It will create project structure.
+*	Link backend to react native front end using apollo-client-preset(HttpLink)
+```
+const client = new ApolloClient({
+  link: new HttpLink({ uri: 'http://localhost:4000/graphql' }),
+  cache: new InMemoryCache()
+});
+```
+*	The ApolloProvider is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
+```
+<ApolloProvider client={client}>
+    <Routes/>
+</ApolloProvider>
+```
+*	Signup
+```
+<TouchableOpacity style={styles.button}>
+    <Text style={styles.buttonText} onPress={this.onAuth.bind(this)}>signup</Text>
+</TouchableOpacity>
+
+onAuth(){
+    if(this.props.type == 'Signup'){
+       this.props.createUser(this.state.email,this.state.password).then(() =>{
+            Actions.login();
+       })
+       .catch(() => {
+            alert("Unsuccessful..Check connection or email already used");
+       });
+    }
+	}
+```
+**	Mutation-
+```
+const signupMutation = gql`
+   mutation ($email: String!, $password: String!) {
+     createUser(email: $email, password: $password) {
+       email
+       password
+     }
+   }`
+
+
+graphql(signupMutation, { props: ({ mutate }) => ({
+  createUser: (email, password) => mutate({ variables: { email, password } }),
+  })
+}),
+```
+
+
+
 
 
 ## Demo
