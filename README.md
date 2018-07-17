@@ -13,6 +13,10 @@
 *	express-graphql- The express-graphql module provides a simple way to create an Express server that runs a GraphQL API.
 *	Mongoose- Mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment.
 
+#### Initialize Node.js Project
+*	Create a new folder called backend:
+<img src="Images/mkdir.png" alt="mkdir" width="440" />
+
 ## Demo
 
 <img src="https://github.com/rationalappdev/oauth-login/blob/master/demo.gif" alt="Demo" width="640" />
