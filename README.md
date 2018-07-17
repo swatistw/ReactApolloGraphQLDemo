@@ -15,7 +15,19 @@
 
 #### Initialize Node.js Project
 *	Create a new folder called backend:
-<img src="Images/mkdir.png" alt="mkdir" width="440" />
+<img src="Images/mkdir.png" alt="mkdir" width="640" />
+Run npm init to create the package.json file, so we can install backend dependencies separately from React Native app:
+<img src="Images/npminit.png" alt="npminit" width="640" />
+It’s going to ask you a few questions. You can just press return to give the default answers for each question.
+*   Install Dependencies
+First, install dev dependencies that we’ll going to need during development:
+<img src="Images/installDep.png" alt="installDep" width="640" />
+And next, install the dependencies that we’ll use to do some work:
+<img src="Images/installDep1.png" alt="installDep1" width="640" />
+*   Create the Database in mLab
+Login in mlab and create new 
+<img src="Images/createMlab.png" alt="createMlab" width="640" />
+
 
 ## Demo
 
