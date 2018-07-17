@@ -35,17 +35,15 @@ Login in mlab and create new
 
 *	Create User model
 
-`const userSchema = new Schema({
+`
+const userSchema = new Schema({
 
-  // local: {
   
       email: String,
 	  
       password: String,
 	  
-  // },
-  
-  // facebook:{
+ 
   
       id: String,
 	  
@@ -53,8 +51,7 @@ Login in mlab and create new
 	  
       name: String
 	  
-  // }
-  
+    
 });
 
 module.exports = mongoose.model('User',userSchema);
@@ -90,7 +87,6 @@ Mutation: {
   
   const userargs = args;
   
-  // check existing user to prevent duplicate email entry
   
     const existingUser = await User.findOne({ email:userargs.email });
 	
@@ -100,7 +96,6 @@ Mutation: {
 	   
      }
 	 
-  // use bacrypt hash function for password encryption
   
     userargs.password = await bcrypt.hash(userargs.password, 12);
 	
@@ -119,7 +114,6 @@ Mutation: {
 		
       }
 	  
-  // use bacrypt compare function for password decryption
   
       const valid = await bcrypt.compare(password, userch.password);
 	  
