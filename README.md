@@ -35,7 +35,7 @@ Login in mlab and create new
 
 *	Create User model
 
-`
+```
 const userSchema = new Schema({
 
   
@@ -56,9 +56,9 @@ const userSchema = new Schema({
 
 module.exports = mongoose.model('User',userSchema);
 
-`
+```
 *	Create Schema user 
-`
+```
 type User {
 
   _id: String!
@@ -78,9 +78,9 @@ type Mutation {
 }
 
 
-`
+```
 *	Create resolver 
-`
+```
 Mutation: {
 
   createUser: async (parent, args, { User }) => {
@@ -149,7 +149,7 @@ Mutation: {
 },
 
 
-`
+```
 
 
 ## Demo
