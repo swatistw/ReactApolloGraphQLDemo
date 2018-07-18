@@ -13,7 +13,7 @@
 *	express-graphql- The express-graphql module provides a simple way to create an Express server that runs a GraphQL API.
 *	Mongoose- Mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment.
 
-### Installation(after cloning repository run following commands from Node command prompt from directory path)
+### Installation(after cloning repository run following command from backend path)
 
 ```
 npm install
@@ -26,11 +26,14 @@ Login in mlab and create new database
 <img src="Images/db_name.png" alt="db_name" width="640" />
 <img src="Images/dbCreated.png" alt="dbCreated" width="640" />
 
-*	Launch the Server
+#### Put MongoDB URI in server.js mongoose.connect()
+
+
+#### Launch the Server
 
 Let’s launch the server and see how it works.
 
-•	Open Terminal App and execute:
+*	Open Terminal App and execute:
 ```
 nodemon
 ```
