@@ -13,149 +13,19 @@
 *	express-graphql- The express-graphql module provides a simple way to create an Express server that runs a GraphQL API.
 *	Mongoose- Mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment.
 
-#### Initialize Node.js Project
-*	Create a new folder called backend:
-<img src="Images/mkdir.png" alt="mkdir" width="640" />
-Run npm init to create the package.json file, so we can install backend dependencies separately from React Native app:
-<img src="Images/npminit.png" alt="npminit" width="640" />
-It’s going to ask you a few questions. You can just press return to give the default answers for each question.
+### Installation(after cloning repository run following commands from Node command prompt from directory path)
 
-*	Install Dependencies
-First, install dev dependencies that we’ll going to need during development:
-<img src="Images/installDep.png" alt="installDep" width="640" />
-And next, install the dependencies that we’ll use to do some work:
-<img src="Images/installDep1.png" alt="installDep1" width="640" />
+```
+npm install
 
+```
 *	Create the Database in mLab
-Login in mlab and create new 
+Login in mlab and create new database 
 <img src="Images/createMlab.png" alt="createMlab" width="640" />
 <img src="Images/sandbox.png" alt="sandbox" width="640" />
 <img src="Images/db_name.png" alt="db_name" width="640" />
 <img src="Images/dbCreated.png" alt="dbCreated" width="640" />
 
-*	Create User model
-
-```
-const userSchema = new Schema({
-      email: String,
-      password: String,
- 
-      id: String,
-      token: String,
-      name: String
-});
-
-module.exports = mongoose.model('User',userSchema);
-
-```
-*	Create Schema user 
-```
-type User {
-  _id: String!
-  email: String!
-  password: String!
-}
-
-type Mutation {
-  createUser(email: String!, password: String!): User!
-  login(email: String!, password: String!): String!
-}
-
-
-```
-*	Create resolver 
-```
-Mutation: {
-  createUser: async (parent, args, { User }) => {
-  const userargs = args;
- 
-    const existingUser = await User.findOne({ email:userargs.email });
-     if (existingUser) {
-       throw new Error('Email already used');
-     }
-    userargs.password = await bcrypt.hash(userargs.password, 12);
-    return User.create(userargs);
-  },
-  
-  login: async(parent, { email, password }, { User, SECRET }) => {
-    const userch = await User.findOne({ email });
-      if (!userch){
-        throw new Error('Not user with that email');
-      }
-      const valid = await bcrypt.compare(password, userch.password);
-      if(!valid){
-        throw new Error('Incorrect password');
-      }
-      const token = jwt.sign(
-      {
-        userch: _.pick(userch, ['id', 'username']),
-      },
-      SECRET,
-      {
-          expiresIn: '1y',
-      }
-    );
-      return token;
-  },
-
-},
-
-```
-*	Create the Server
-Let’s create a script that will run an HTTP server and handle incoming requests
-•	Create a new file called server.js with the following content
-```
-// import required packages
-const typeDefs  = require('./schema/schema');
-const resolvers = require('./schema/resolver');
-const User = require('./model/users');
-
-// mlab database connection
-mongoose.connect(‘MondoDB_URI’); 
-mongoose.connection.once('open', () =>{
-  console.log("connected to database");
-});
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers
-});
-
-const SECRET = 'secret string put here';
-
-// Transform Facebook profile because Facebook and Google profile objects look different
-// and we want to transform them into user objects that have the same set of attributes
-
-// Transform Google profile into user object
-
-// Here Register Facebook Passport strategy
-
-// Here Register Google Passport strategy
-
-// Serialize user into the sessions
-passport.serializeUser((user, done) => done(null, user));
-
-// Deserialize user from the sessions
-passport.deserializeUser((user, done) => done(null, user));
-
-// Initialize http server
-const app = express();
-
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Set up Facebook auth routes(call facebook API)
-
-// Set up Google auth routes(call Google API)
-
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema, context: { User, SECRET } }));
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
-
-const server = app.listen(4000, () => {
-  const { address, port } = server.address();
-  console.log(`Listening at http://${address}:${port}`);
-});
-```
 *	Launch the Server
 
 Let’s launch the server and see how it works.
@@ -166,6 +36,7 @@ nodemon
 ```
 <img src="Images/nodemon.png" alt="nodemon" width="640" />
 That means the server works. That’s great. Keep it running and let’s continue to the mobile app.
+
 
 ## Mobile App
 ### Now that we have our backend ready let’s build the mobile app with react-apollo.
