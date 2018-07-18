@@ -370,16 +370,23 @@ app.get('/auth/facebook/callback',
 <img src="Images/createCred3.png" alt="createCred3" width="640" />
 <img src="Images/createCred4.png" alt="createCred4" width="640" />
 <img src="Images/createCred5.png" alt="createCred5" width="640" />
+
 *	Signing certificate generation
+
 #### If you already having keystore then
+
 ```
 keytool -exportcert -keystore path-to-debug-or-production-keystore -list –v
 
 ```
 (“path-to-debug-or-production-keystore” – specify keystore file path)
+
 Note- Run above command from java/bin folder path
+
 otherwise you need to create keystore using following steps:
+
 1) run following command from JDK/bin folder path on command propmt-
+
 2) keytool -genkey -v -keystore D:\my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
 
 (“D:\” – you can specify path , here keystore file save in D:\ path)
@@ -387,7 +394,9 @@ otherwise you need to create keystore using following steps:
 <img src="Images/createCred6.png" alt="createCred6" width="640" />
 
 *	Set API in server
+
 ```
+
 passport.use(new GoogleStrategy(
   {
     clientID:’’,
@@ -404,8 +413,8 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google' }),
   (req, res) => res.redirect(‘app_name://login?user=' + JSON.stringify(req.user)));
-
-  ```
+  
+```
 
 
 
