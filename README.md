@@ -270,9 +270,12 @@ loginWithFacebook = () => this.openURL('https://localhost:4000/auth/facebook');
 <img src="Images/fb_start.png" alt="fb_start" width="200" height="400" />
 <img src="Images/fb_done.png" alt="fb_done" width="200" height="400" />
 *	Google+ login
+
 ```
 loginWithGoogle = () => this.openURL('https://localhost.xip.io:4000/auth/google');
+
 ```
+
 It will directly call api from server/backend
 
 <img src="Images/gmail_start.png" alt="gmail_start" width="200" height="400" />
