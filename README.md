@@ -220,7 +220,7 @@ graphql(signupMutation, { props: ({ mutate }) => ({
 Result –
 
 <img src="Images/signupcred.png" alt="signupcred" width="200" height="400" />
-<img src="Images/signupDb.png" alt="signupDb" width="200" height="400" />
+<img src="Images/signupDb.png" alt="signupDb" width="640" />
 
 *	Login
 ```
@@ -266,9 +266,8 @@ For successful login –
 loginWithFacebook = () => this.openURL('https://localhost:4000/auth/facebook');
 
 ```
-Result –
+
 <img src="Images/fb_start.png" alt="fb_start" width="200" height="400" />
-After successful facebook login-
 <img src="Images/fb_done.png" alt="fb_done" width="200" height="400" />
 *	Google+ login
 ```
@@ -276,8 +275,6 @@ loginWithGoogle = () => this.openURL('https://localhost.xip.io:4000/auth/google'
 ```
 It will directly call api from server/backend
 
-Result –
 <img src="Images/gmail_start.png" alt="gmail_start" width="200" height="400" />
-After successful google+ login
 <img src="Images/gmail_done.png" alt="gmail_done" width="200" height="400" />
 
