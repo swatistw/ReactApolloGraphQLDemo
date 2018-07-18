@@ -75,6 +75,7 @@ For successful login –
 
 <img src="Images/fb_start.png" alt="fb_start" width="200" height="400" />
 <img src="Images/fb_done.png" alt="fb_done" width="200" height="400" />
+
 *	Google+ login
 
 It will directly call api from server/backend
@@ -83,9 +84,8 @@ It will directly call api from server/backend
 <img src="Images/gmail_done.png" alt="gmail_done" width="200" height="400" />
 
 ## Facebook Login
-### We’re going to build an app that users can log into with their Facebook or Google account. Actually, we’re going to build two things:
+### We’re going to build an app that users can log into with their Facebook or Google account.
 
-*	Node.js backend. It’s going to handle user authentication via Facebook and Google OAuth and redirect the user back to the mobile app using a special URL that will look like OAuthLogin://login?user=...
 *	React Native mobile app. It’s going to show login buttons and once clicked send the user to the backend to have them log in with their Facebook or Google accounts
 That’s how it’s going to look like.
 <img src="Images/welScreen.png" alt="welScreen" width="200" height="400" />
