@@ -42,94 +42,26 @@ That means the server works. That’s great. Keep it running and let’s continu
 
 ## Mobile App
 ### Now that we have our backend ready let’s build the mobile app with react-apollo.
-#### react-apollo -React-Apollo includes a component for providing a client instance to a React component tree, and a higher-order component for retrieving that client instance.
-*	Generate project using react-native cli:
+#### react-apollo - React-Apollo includes a component for providing a client instance to a React component tree, and a higher-order component for retrieving that client instance.
+*	Install node-module
 ```
-react-native init OAuthLogin npm install 
+npm install 
 ```
-It will create project structure.
-*	Link backend to react native front end using apollo-client-preset(HttpLink)
-```
-const client = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:4000/graphql' }),
-  cache: new InMemoryCache()
-});
-```
-*	The ApolloProvider is similar to React’s context provider. It wraps your React app and places the client on the context, which allows you to access it from anywhere in your component tree.
-```
-<ApolloProvider client={client}>
-    <Routes/>
-</ApolloProvider>
-```
-### For start project you need to start emulator first , then open Terminal App and execute:
+
+### For start project you need to start emulator first , then open Terminal and execute:
 
 ```
 react-native run-android
 
 ```
 *	Signup
-```
-onAuth(){
-    if(this.props.type == 'Signup'){
-       this.props.createUser(this.state.email,this.state.password).then(() =>{
-            Actions.login();
-       })
-       .catch(() => {
-            alert("Unsuccessful..Check connection or email already used");
-       });
-    }
-	}
-```
-Mutation-
-```
-const signupMutation = gql`
-   mutation ($email: String!, $password: String!) {
-     createUser(email: $email, password: $password) {
-       email
-       password
-     }
-   }`
 
-
-graphql(signupMutation, { props: ({ mutate }) => ({
-  createUser: (email, password) => mutate({ variables: { email, password } }),
-  })
-}),
-```
 Result –
 
 <img src="Images/signupcred.png" alt="signupcred" width="200" height="400" />
 <img src="Images/signupDb.png" alt="signupDb" width="640" />
 
 *	Login
-```
-onAuth(){
-      this.props.login(this.state.email,this.state.password).then(() =>{
-           Actions.home();
-        })
-        .catch(() => {
-            alert("Unsuccessful Login..try again");
-        })
-
-    }
-}
-```
-
-Mutation-
-
-```
-const loginMutation = gql`
-   mutation ($email: String!, $password: String!) {
-     login(email: $email, password: $password)
-  }`
-
-
-graphql(loginMutation, { props: ({ mutate }) => ({
-   login: (email, password) => mutate({ variables: { email, password } }),
-   })
- })
- 
-```
 
 Result –
 
@@ -140,20 +72,10 @@ For successful login –
 <img src="Images/loginDone.png" alt="loginDone" width="200" height="400" />
 
 *	Facebook login 
-```
-
-loginWithFacebook = () => this.openURL('https://localhost:4000/auth/facebook');
-
-```
 
 <img src="Images/fb_start.png" alt="fb_start" width="200" height="400" />
 <img src="Images/fb_done.png" alt="fb_done" width="200" height="400" />
 *	Google+ login
-
-```
-loginWithGoogle = () => this.openURL('https://localhost.xip.io:4000/auth/google');
-
-```
 
 It will directly call api from server/backend
 
