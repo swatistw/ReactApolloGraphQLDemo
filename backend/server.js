@@ -16,7 +16,7 @@ const resolvers = require('./schema/resolver');
 const User = require('./model/users');
 
 // mlab database connection
-mongoose.connect('mongodb://apollo_react:apollo123@ds125031.mlab.com:25031/apollo_react');
+mongoose.connect('put malb connection string here');
 mongoose.connection.once('open', () =>{
   console.log("connected to database");
 });
