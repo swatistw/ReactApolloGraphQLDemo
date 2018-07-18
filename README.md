@@ -188,6 +188,12 @@ const client = new ApolloClient({
     <Routes/>
 </ApolloProvider>
 ```
+### For start project you need to start emulator first , then open Terminal App and execute:
+
+```
+react-native run-android
+
+```
 *	Signup
 ```
 onAuth(){
