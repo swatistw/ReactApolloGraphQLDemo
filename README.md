@@ -28,7 +28,6 @@ Login in mlab and create new database
 
 #### Put MongoDB URI in server.js mongoose.connect()
 
-
 #### Launch the Server
 
 Let’s launch the server and see how it works.
