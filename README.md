@@ -84,11 +84,6 @@ It will directly call api from server/backend
 <img src="Images/gmail_done.png" alt="gmail_done" width="200" height="400" />
 
 ## Facebook Login
-### We’re going to build an app that users can log into with their Facebook or Google account.
-
-*	React Native mobile app. It’s going to show login buttons and once clicked send the user to the backend to have them log in with their Facebook or Google accounts
-That’s how it’s going to look like.
-<img src="Images/welScreen.png" alt="welScreen" width="200" height="400" />
 
 #### Setting Up Facebook App
 *	Go to https://developers.facebook.com/.
@@ -130,30 +125,6 @@ o	Place that link to Privacy Policy URL
 <img src="Images/oauthUrl.png" alt="oauthUrl" width="640" />
 
 *	Save all changes
-*	Add API in server
-```
-passport.use(new FacebookStrategy(
-    {
-        clientID:’’,
-        clientSecret:’’,
-        callbackURL: 'https://localhost:4000/auth/facebook/callback',
-        profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
-    },
-  // Gets called when user authorizes access to their profile
-  function (accessToken, refreshToken, profile, done){
-    // Return done callback and pass transformed user object
-     done(null, transformFacebookProfile(profile._json))
-     }
-));
-
-app.get('/auth/facebook', passport.authenticate('facebook'));
-
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
-  // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
-  (req, res) => res.redirect('app_name://login?user=' + JSON.stringify(req.user)));
-  
-```
 
 ## Google+ Login
 
@@ -194,28 +165,6 @@ otherwise you need to create keystore using following steps:
 
 <img src="Images/createCred6.png" alt="createCred6" width="640" />
 
-*	Set API in server
-
-```
-
-passport.use(new GoogleStrategy(
-  {
-    clientID:’’,
-    clientSecret: '',
-    callbackURL: 'https://localhost.xip.io:4000/auth/google/callback',
-  },
-  function (accessToken, refreshToken, profile, done){
-    done(null, transformGoogleProfile(profile._json))
-    }
-));
-
-
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/auth/google' }),
-  (req, res) => res.redirect(‘app_name://login?user=' + JSON.stringify(req.user)));
-  
-```
 
 
 
