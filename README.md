@@ -293,24 +293,40 @@ That’s how it’s going to look like.
 *	Go to https://developers.facebook.com/.
 *	Click My Apps and then Add a New App(It will create App ID with App secret)
 
-<img src="Images/addapp.png" alt="addapp" width="640" />
+<img src="Images/addApp.png" alt="addapp" width="640" />
+
 *	Don’t forget to add Email id in Facebook account. 
 *	Add platform
+
 Settings ->Basics -> Add platform -> Web
+
 	Set Url , 
+	
 	e.g https://localhost:4000/auth/facebook/callback
+	
 <img src="Images/platformAdd.png" alt="platformAdd" width="640" />
+
 *	App Domains(optional)
+
 o	Same as above url - https://localhost:4000/auth/facebook/callback 
+
 *	Privacy Policy URL(optional)	
+
 o	Create policy url here - https://www.freeprivacypolicy.com/
+
 o	After creating policy save that policy with html extension and placed it to Google drive
+
 o	Get sharable link of that file using Right click->Get sharable link from Google drive
+
 o	Place that link to Privacy Policy URL
+
 *	On status 
+
 <img src="Images/statusOn.png" alt="statusOn" width="640" />
 *	Add Valid OAuth Redirect URIs  in Facebook Login option(Same as App domain .It is mandatory)
+
 <img src="Images/oauthUrl.png" alt="oauthUrl" width="640" />
+
 *	Save all changes
 *	Add API in server
 ```
