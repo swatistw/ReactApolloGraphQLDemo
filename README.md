@@ -323,6 +323,7 @@ o	Place that link to Privacy Policy URL
 *	On status 
 
 <img src="Images/statusOn.png" alt="statusOn" width="640" />
+
 *	Add Valid OAuth Redirect URIs  in Facebook Login option(Same as App domain .It is mandatory)
 
 <img src="Images/oauthUrl.png" alt="oauthUrl" width="640" />
@@ -352,6 +353,67 @@ app.get('/auth/facebook/callback',
   (req, res) => res.redirect('app_name://login?user=' + JSON.stringify(req.user)));
   
 ```
+
+## Google+ Login
+
+*	Go to https://console.developers.google.com/
+*	Click Select a project at the top of the page.
+*	Click to create a new project.
+*	Enable Google+ API 
+*	Create Credentials
+
+<img src="Images/createCred.png" alt="createCred" width="640" />
+
+*	Add credentials for project
+<img src="Images/createCred1.png" alt="createCred1" width="640" />
+<img src="Images/createCred2.png" alt="createCred2" width="640" />
+<img src="Images/createCred3.png" alt="createCred3" width="640" />
+<img src="Images/createCred4.png" alt="createCred4" width="640" />
+<img src="Images/createCred5.png" alt="createCred5" width="640" />
+*	Signing certificate generation
+#### If you already having keystore then
+```
+keytool -exportcert -keystore path-to-debug-or-production-keystore -list –v
+
+```
+(“path-to-debug-or-production-keystore” – specify keystore file path)
+Note- Run above command from java/bin folder path
+otherwise you need to create keystore using following steps:
+1) run following command from JDK/bin folder path on command propmt-
+2) keytool -genkey -v -keystore D:\my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+
+(“D:\” – you can specify path , here keystore file save in D:\ path)
+
+<img src="Images/createCred6.png" alt="createCred6" width="640" />
+
+*	Set API in server
+```
+passport.use(new GoogleStrategy(
+  {
+    clientID:’’,
+    clientSecret: '',
+    callbackURL: 'https://localhost.xip.io:4000/auth/google/callback',
+  },
+  function (accessToken, refreshToken, profile, done){
+    done(null, transformGoogleProfile(profile._json))
+    }
+));
+
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/auth/google' }),
+  (req, res) => res.redirect(‘app_name://login?user=' + JSON.stringify(req.user)));
+
+  ```
+
+
+
+
+
+
+
+
 	
 
 
