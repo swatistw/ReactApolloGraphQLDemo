@@ -219,8 +219,8 @@ graphql(signupMutation, { props: ({ mutate }) => ({
 ```
 Result –
 
-<img src="Images/signupcred.png" alt="signupcred" width="640" />
-<img src="Images/signupDb.png" alt="signupDb" width="640" />
+<img src="Images/signupcred.png" alt="signupcred" width="400" height="400" />
+<img src="Images/signupDb.png" alt="signupDb" width="400" height="400" />
 
 *	Login
 ```
@@ -254,41 +254,30 @@ graphql(loginMutation, { props: ({ mutate }) => ({
 
 Result –
 
-<img src="Images/logincred.png" alt="logincred" width="640" />
+<img src="Images/logincred.png" alt="logincred" width="400" height="400" />
 If credentials not match it will throw error like below-
-<img src="Images/loginUnsuccessful.png" alt="loginUnsuccessful" width="640" />
+<img src="Images/loginUnsuccessful.png" alt="loginUnsuccessful" width="400" height="400" />
 For successful login –
-<img src="Images/loginDone.png" alt="loginDone" width="640" />
+<img src="Images/loginDone.png" alt="loginDone" width="400" height="400" />
 
 *	Facebook login 
 ```
-<Icon.Button
-  name="facebook"
-  backgroundColor="#3b5998"
-  onPress={this.loginWithFacebook}
->
 
 loginWithFacebook = () => this.openURL('https://localhost:4000/auth/facebook');
 
 ```
 Result –
-<img src="Images/fb_start.png" alt="fb_start" width="640" />
+<img src="Images/fb_start.png" alt="fb_start" width="400" height="400" />
 After successful facebook login-
-<img src="Images/fb_done.png" alt="fb_done" width="640" />
+<img src="Images/fb_done.png" alt="fb_done" width="400" height="400" />
 *	Google+ login
 ```
-<Icon.Button
-  name="google"
-  backgroundColor="#3b5998"
-  onPress={this.loginWithGoogle}
->
-
 loginWithGoogle = () => this.openURL('https://localhost.xip.io:4000/auth/google');
 ```
 It will directly call api from server/backend
 
 Result –
-<img src="Images/gmail_start.png" alt="gmail_start" width="640" />
+<img src="Images/gmail_start.png" alt="gmail_start" width="400" height="400" />
 After successful google+ login
-<img src="Images/gmail_done.png" alt="gmail_done" width="640" />
+<img src="Images/gmail_done.png" alt="gmail_done" width="400" height="400" />
 
