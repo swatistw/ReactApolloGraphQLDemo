@@ -105,19 +105,7 @@ Mutation: {
 Let’s create a script that will run an HTTP server and handle incoming requests
 •	Create a new file called server.js with the following content
 ```
-const express = require('express');
-const passport = require('passport');
-const FacebookStrategy = require('passport-facebook');
-const GoogleStrategy = require('passport-google-oauth20');
-
-const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const { makeExecutableSchema } = require('graphql-tools');
-const graphqlHTTP = require('express-graphql');
-const mongoose =  require('mongoose');
-var https = require('https');
-var fs = require('fs');
+// import required packages
 const typeDefs  = require('./schema/schema');
 const resolvers = require('./schema/resolver');
 const User = require('./model/users');
@@ -136,43 +124,12 @@ const SECRET = 'secret string put here';
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
-const transformFacebookProfile = (profile) => ({
-  name: profile.name,
-  avatar: profile.picture.data.url,
-});
 
 // Transform Google profile into user object
-const transformGoogleProfile = (profile) => ({
-  name: profile.displayName,
-  avatar: profile.image.url,
-});
 
-// Register Facebook Passport strategy
-passport.use(new FacebookStrategy(
-    {
-        clientID: 'put facebook App Id here',
-        clientSecret: 'put app secret here',
-        callbackURL: 'https://localhost:4000/auth/facebook/callback',
-        profileFields: ['id', 'name', 'displayName', 'picture', 'email'],
-    },
-  // Gets called when user authorizes access to their profile
-  function (accessToken, refreshToken, profile, done){
-    // Return done callback and pass transformed user object
-     done(null, transformFacebookProfile(profile._json))
-     }
-));
+// Here Register Facebook Passport strategy
 
-// Register Google Passport strategy
-passport.use(new GoogleStrategy(
-  {
-    clientID: '',
-    clientSecret: '',
-    callbackURL: 'https://localhost.xip.io:4000/auth/google/callback',
-  },
-  function (accessToken, refreshToken, profile, done){
-    done(null, transformGoogleProfile(profile._json))
-    }
-));
+// Here Register Google Passport strategy
 
 // Serialize user into the sessions
 passport.serializeUser((user, done) => done(null, user));
@@ -187,28 +144,12 @@ const app = express();
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Set up Facebook auth routes
-app.get('/auth/facebook', passport.authenticate('facebook'));
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
-  // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
-  (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
+// Set up Facebook auth routes(call facebook API)
 
-// Set up Google auth routes
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/auth/google' }),
-  (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
-
+// Set up Google auth routes(call Google API)
 
 app.use('/graphql', bodyParser.json(), graphqlExpress({ schema, context: { User, SECRET } }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
-
-//var privateKey  = fs.readFileSync('C:/demo/ca.key', 'utf8');
-//var certificate = fs.readFileSync('C:/demo/ca.crt', 'utf8');
-//var credentials = {key: privateKey, cert: certificate};
-//var httpsServer = https.createServer(credentials,app);
-//httpsServer.listen(4000);
 
 const server = app.listen(4000, () => {
   const { address, port } = server.address();
@@ -249,10 +190,6 @@ const client = new ApolloClient({
 ```
 *	Signup
 ```
-<TouchableOpacity style={styles.button}>
-    <Text style={styles.buttonText} onPress={this.onAuth.bind(this)}>signup</Text>
-</TouchableOpacity>
-
 onAuth(){
     if(this.props.type == 'Signup'){
        this.props.createUser(this.state.email,this.state.password).then(() =>{
@@ -284,12 +221,9 @@ Result –
 
 <img src="Images/signupcred.png" alt="signupcred" width="640" />
 <img src="Images/signupDb.png" alt="signupDb" width="640" />
+
 *	Login
 ```
-<TouchableOpacity style={styles.button}>
-    <Text style={styles.buttonText} onPress={this.onAuth.bind(this)}>Login</Text>
-</TouchableOpacity>
-
 onAuth(){
       this.props.login(this.state.email,this.state.password).then(() =>{
            Actions.home();
@@ -301,7 +235,9 @@ onAuth(){
     }
 }
 ```
+
 Mutation-
+
 ```
 const loginMutation = gql`
    mutation ($email: String!, $password: String!) {
@@ -313,8 +249,11 @@ graphql(loginMutation, { props: ({ mutate }) => ({
    login: (email, password) => mutate({ variables: { email, password } }),
    })
  })
+ 
 ```
+
 Result –
+
 <img src="Images/logincred.png" alt="logincred" width="640" />
 If credentials not match it will throw error like below-
 <img src="Images/loginUnsuccessful.png" alt="loginUnsuccessful" width="640" />
